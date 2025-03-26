@@ -1,3 +1,4 @@
+import { jwtDecode } from "jwt-decode";
 import { z } from "zod";
 
 const signUpSchema = z
@@ -134,7 +135,7 @@ export function useLoginForm() {
 
 export const useTokenStore = () => {
   const token = useCookie("accessToken", {
-    maxAge: 900, // 15 menit
+    maxAge: 30 * 24 * 60 * 60, // 30 days in cookie, but token expired in 15 minutes
     sameSite: "strict",
     secure: true,
     httpOnly: false,
@@ -148,7 +149,15 @@ export const useTokenStore = () => {
     token.value = null;
   };
 
-  return { token, setToken, removeToken };
+  const isTokenExpired = () => {
+    if (!token.value) return true;
+    const decoded = jwtDecode(token.value);
+    // 15 menit
+    if (new Date().getTime() > decoded.exp * 1000) return true;
+    return false;
+  };
+
+  return { token, setToken, removeToken, isTokenExpired };
 };
 
 export const useLogoutForm = () => {

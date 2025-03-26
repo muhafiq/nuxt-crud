@@ -14,8 +14,6 @@ export default defineEventHandler(async (event) => {
 
   const payload = await JwtUtils.validateRefreshToken(refreshToken);
 
-  console.log("PAYLOADDDD : ", payload);
-
   const deletedToken = await UserService.deleteToken(payload.userId);
   if (!deletedToken) {
     setResponseStatus(event, 500);

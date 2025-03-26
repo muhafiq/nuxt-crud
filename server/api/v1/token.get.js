@@ -5,7 +5,6 @@ export default defineEventHandler(async (event) => {
   const refreshToken = getCookie(event, "refreshToken");
 
   if (!refreshToken) {
-    console.log(refreshToken);
     setResponseStatus(event, 401);
     return {
       success: false,

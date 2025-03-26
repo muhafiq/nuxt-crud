@@ -5,6 +5,8 @@ const menus = ref([
 ]);
 
 const open = ref(false);
+
+const auth = useTokenStore();
 </script>
 
 <template>
@@ -57,6 +59,7 @@ const open = ref(false);
         </button>
         <!-- Navigation links -->
         <ul
+          v-show="!auth.token.value"
           :class="[
             open
               ? 'visible opacity-100 backdrop-blur-sm'
@@ -83,9 +86,8 @@ const open = ref(false);
           </li>
         </ul>
         <div class="flex items-center px-6 ml-auto lg:ml-0 lg:p-0">
-          <!-- Avatar -->
           <a
-            v-if="1 !== 1"
+            v-show="auth.token.value"
             href="#"
             class="relative inline-flex items-center justify-center w-10 h-10 text-white rounded-full"
           >
@@ -103,7 +105,6 @@ const open = ref(false);
               <span class="sr-only"> 7 new emails </span>
             </span>
           </a>
-          <!-- End Avatar -->
         </div>
       </nav>
     </div>
