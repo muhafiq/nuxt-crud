@@ -116,6 +116,7 @@ export function useLoginForm() {
         if (error.statusCode === 400 && error.data?.errors) {
           errors.value = error.data.errors;
         } else {
+          console.error(error);
           alert(error.data?.message || "Signup failed");
         }
       } finally {
@@ -130,3 +131,22 @@ export function useLoginForm() {
 
   return { form, isSubmitting, errors, handleSubmit };
 }
+
+export const useTokenStore = () => {
+  const token = useCookie("accessToken", {
+    maxAge: 900, // 15 menit
+    sameSite: "strict",
+    secure: true,
+    httpOnly: false,
+  });
+
+  const setToken = (newToken) => {
+    token.value = newToken;
+  };
+
+  const removeToken = () => {
+    token.value = null;
+  };
+
+  return { token, setToken, removeToken };
+};

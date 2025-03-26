@@ -14,4 +14,8 @@ export default defineNuxtConfig({
     },
     pageTransition: { name: "page", mode: "out-in" },
   },
+  runtimeConfig: {
+    JWT_ACCCESS_SECRET_KEY: process.env.ACCESS_SECRET_KEY,
+    JWT_REFRESH_SECRET_KEY: process.env.REFRESH_SECRET_KEY,
+  },
 });

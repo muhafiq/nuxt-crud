@@ -18,4 +18,15 @@ export default class UserService {
   static async getUserById(userId) {
     return await prisma.user.findUnique({ where: { userId: userId } });
   }
+
+  static async storeToken(token, email) {
+    return await prisma.user.update({
+      data: { token: token },
+      where: { email: email },
+    });
+  }
+
+  static async getUserByToken(token) {
+    return await prisma.user.findFirst({ where: { token: token } });
+  }
 }

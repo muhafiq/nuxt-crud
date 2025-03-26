@@ -50,6 +50,16 @@ export default defineEventHandler(async (event) => {
     name: user.name,
   });
 
+  const isUpdatedToken = await UserService.storeToken(
+    refreshToken,
+    validated.data.email
+  );
+  if (!isUpdatedToken) {
+    console.error("Token error : ", isUpdatedToken);
+    setResponseStatus(event, 500);
+    return { success: false, message: "Internal server error." };
+  }
+
   setCookie(event, "refreshToken", refreshToken, {
     httpOnly: true,
     maxAge: 60 * 60 * 24 * 30,
@@ -59,7 +69,7 @@ export default defineEventHandler(async (event) => {
     success: true,
     message: "User login successfully.",
     data: {
-      accessToken,
+      token: accessToken,
     },
   };
 });

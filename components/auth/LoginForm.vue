@@ -1,8 +1,9 @@
 <script setup>
 const { form, errors, isSubmitting, handleSubmit } = useLoginForm();
+const auth = useTokenStore();
 
 const submitForm = handleSubmit(async (values) => {
-  console.log(values);
+  auth.setToken(values.data.token);
   await navigateTo("/dashboard");
 });
 </script>
