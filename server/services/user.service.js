@@ -29,4 +29,11 @@ export default class UserService {
   static async getUserByToken(token) {
     return await prisma.user.findFirst({ where: { token: token } });
   }
+
+  static async deleteToken(userId) {
+    return await prisma.user.update({
+      data: { token: null },
+      where: { userId: userId },
+    });
+  }
 }

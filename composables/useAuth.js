@@ -150,3 +150,29 @@ export const useTokenStore = () => {
 
   return { token, setToken, removeToken };
 };
+
+export const useLogoutForm = () => {
+  const isSubmitting = ref(false);
+  const errors = ref("");
+
+  const handleSubmit = (onSuccess) => {
+    return async (event) => {
+      event.preventDefault();
+
+      isSubmitting.value = true;
+      try {
+        const response = await $fetch("/api/v1/auth/logout", {
+          method: "DELETE",
+        });
+
+        await onSuccess(response);
+      } catch (error) {
+        errors.value = error.message;
+      } finally {
+        isSubmitting.value = false;
+      }
+    };
+  };
+
+  return { isSubmitting, handleSubmit, errors };
+};
